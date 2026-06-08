@@ -91,9 +91,9 @@ void uni_esp32_enable_uart_output(int enabled) {
         PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[1], PIN_FUNC_GPIO);
         PIN_FUNC_SELECT(GPIO_PIN_MUX_REG[3], PIN_FUNC_GPIO);
 
-        _GLOBAL_REENT->_stdin = (FILE*)&__sf_fake_stdin;
-        _GLOBAL_REENT->_stdout = (FILE*)&__sf_fake_stdout;
-        _GLOBAL_REENT->_stderr = (FILE*)&__sf_fake_stderr;
+        _GLOBAL_REENT->_stdin = NULL;
+        _GLOBAL_REENT->_stdout = NULL;
+        _GLOBAL_REENT->_stderr = NULL;
 
         ets_install_putc1(NULL);
         ets_install_putc2(NULL);
