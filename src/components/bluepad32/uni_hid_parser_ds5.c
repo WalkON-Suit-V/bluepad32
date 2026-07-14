@@ -31,6 +31,7 @@ limitations under the License.
 #include "uni_hid_parser.h"
 #include "uni_log.h"
 #include "uni_utils.h"
+#include "uni_virtual_device.h"
 
 #define DS5_FEATURE_REPORT_CALIBRATION 0x05
 #define DS5_FEATURE_REPORT_CALIBRATION_SIZE 41
@@ -625,7 +626,14 @@ static void ds5_send_enable_lightbar_report(uni_hid_device_t* d) {
     // Only after the connection was accepted we should create the virtual device.
     uni_hid_device_t* child = uni_hid_device_create_virtual(d);
     if (!child) {
-        loge("DS5: Failed to create virtual device\n");
+        // A NULL child is the normal, expected outcome when the virtual device
+        // (touchpad-as-mouse) is turned off: uni_hid_device_create_virtual()
+        // bails out on !uni_virtual_device_is_enabled() before it even looks for
+        // a free slot. Only a real failure -- feature on, no slot left -- is
+        // worth an error. The gamepad itself is unaffected either way; it was
+        // already marked ready above.
+        if (uni_virtual_device_is_enabled())
+            loge("DS5: Failed to create virtual device\n");
         return;
     }
 
