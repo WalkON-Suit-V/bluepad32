@@ -435,6 +435,8 @@ void uni_hid_parser_ds5_parse_input_report(uni_hid_device_t* d, const uint8_t* r
         ctl->gamepad.buttons |= BUTTON_THUMB_R;  // Thumb R
     if (r->buttons[2] & 0x01)
         ctl->gamepad.misc_buttons |= MISC_BUTTON_SYSTEM;  // PS
+    if (r->buttons[2] & 0x02)
+        ctl->gamepad.misc_buttons |= MISC_BUTTON_TOUCHPAD;  // Touchpad click
     if (r->buttons[2] & 0x04)
         ctl->gamepad.misc_buttons |= MISC_BUTTON_CAPTURE;  // "mute" button
 
